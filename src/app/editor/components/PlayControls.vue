@@ -14,6 +14,7 @@
             <PlayButtons class="playControlItem" />
             <PlaybackSlider class="playControlItem growLarge" />
             <VolumeSlider class="playControlItem growSmall" />
+            <SpeakValue class="playControlItem" />
         </div>
     </div>
 </template>
@@ -21,13 +22,15 @@
 <script lang="ts">
 import PlayButtons from './PlayButtons.vue';
 import PlaybackSlider from './PlaybackSlider.vue';
+import SpeakValue from './SpeakValue.vue';
 import VolumeSlider from './VolumeSlider.vue';
 
 export default {
     components: {
         PlayButtons,
         PlaybackSlider,
-        VolumeSlider
+        VolumeSlider,
+        SpeakValue
     }
 };
 </script>

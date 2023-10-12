@@ -1,32 +1,11 @@
 <template>
     <div class="play-buttons-container">
-        <PlayButton
-            :icon-path="playPauseIcon"
-            @click="onPlayPauseClick"
-        >
-            {{ playing ? 'Pause' : 'Play' }}
-        </PlayButton>
-        <PlayButton
-            :icon-path="stopIcon"
-            :enabled="playing || paused"
-            @click="onStopClick"
-        >
-            Stop
-        </PlayButton>
-        <PlayCheckbox
-            v-model="loopEnabled"
-            :icon-path="loopIcon"
-        >
-            Loop
-        </PlayCheckbox>
-        <!--
         <PlayCheckbox
             v-model="speakValue"
             :icon-path="musicIcon"
         >
             Speak Value
         </PlayCheckbox>
-        -->
     </div>
 </template>
 
@@ -43,7 +22,7 @@ import PlayCheckbox from './PlayCheckbox.vue';
 
 export default {
     components: {
-        PlayButton, PlayCheckbox
+        PlayCheckbox
     },
     data() {
         return {
