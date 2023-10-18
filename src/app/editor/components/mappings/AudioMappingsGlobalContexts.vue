@@ -155,8 +155,7 @@
                 <SEControl
                     v-slot="slotProps"
                     label="Volume"
-                    helptext="The volume for the context."
-                    :horizontal-reverse="true"
+                    helptext="The volume for the context but crazy."                    :horizontal-reverse="true"
                     :expand-content="true"
                 >
                     <SESlider
@@ -165,6 +164,29 @@
                         :labelledby="slotProps.labelId"
                     />
                 </SEControl>
+
+
+
+
+
+
+                <!-- checkbox to turn on tts -->
+                <SEControl
+                    v-slot="slotProps"
+                    label="silly tts checkbox"
+                    helptext="Highlight the current point with a tooltip while playing."
+                    horizontal
+                >
+                    <SECheckbox
+                        :id="slotProps.controlId"
+                        v-model="tooltipMarkerEnabled"
+                    />
+                </SEControl>
+
+
+
+
+
                 <fieldset>
                     <legend>Pitch</legend>
                     <SEControl
@@ -324,6 +346,10 @@ export default {
         },
         yStep() {
             return getSliderStep(this.yRange.max - this.yRange.min, 200);
+        },
+        tooltipMarkerEnabled: {
+            get() { return (this as any).$store.state.globalSonifyParametersStore.tooltipMarkerEnabled; },
+            set(val) { return this.$store.commit('globalSonifyParametersStore/setTooltipMarkerEnabled', val); }
         },
         ...mapState({
             reactToDataUpdates: (state: any) => state.viewStore.reactToDataUpdates,
