@@ -14,7 +14,7 @@
             <PlayButtons class="playControlItem" />
             <PlaybackSlider class="playControlItem growLarge" />
             <VolumeSlider class="playControlItem growSmall" />
-            <SpeakValues class="playControlItem" />
+            <!-- <SpeakValues class="playControlItem" /> -->
         </div>
     </div>
 </template>
@@ -30,7 +30,7 @@ export default {
         PlayButtons,
         PlaybackSlider,
         VolumeSlider,
-        SpeakValues
+        //SpeakValues
     }
 };
 </script>
