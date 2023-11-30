@@ -40,6 +40,19 @@
                     />
                 </keep-alive>
             </SEAccordionItem>
+            <SEAccordionItem
+                heading="Text to Speech common values"
+                :selected="expandedGlobalAudioTTSCommonAccordionItem"
+                controls="audio-global-TTSCommon"
+                @click="onTTSCommonAccordionClick"
+            >
+                <keep-alive>
+                    <AudioMappingsGlobalTTSCommon
+                        id="audio-global-TTSCommon"
+                        :variable-value-prop="false"
+                    />
+                </keep-alive>
+            </SEAccordionItem>
         </SEAccordionContainer>
     </div>
 </template>
@@ -50,6 +63,7 @@ import SEAccordionContainer from '../basic/SEAccordionContainer.vue';
 import AudioMappingsGlobalBasic from './AudioMappingsGlobalBasic.vue';
 import AudioMappingsGlobalDefaults from './AudioMappingsGlobalDefaults.vue';
 import AudioMappingsGlobalContexts from './AudioMappingsGlobalContexts.vue';
+import AudioMappingsGlobalTTSCommon from './AudioMappingsGlobalTTSCommon.vue';
 import { mapState } from 'vuex';
 
 export default {
@@ -58,12 +72,14 @@ export default {
         AudioMappingsGlobalBasic,
         AudioMappingsGlobalContexts,
         AudioMappingsGlobalDefaults,
+        AudioMappingsGlobalTTSCommon,
         SEAccordionItem
     },
     computed: mapState('viewStore', [
         'expandedGlobalAudioBasicAccordionItem',
         'expandedGlobalAudioDefaultsAccordionItem',
-        'expandedGlobalAudioContextsAccordionItem'
+        'expandedGlobalAudioContextsAccordionItem',
+        'expandedGlobalAudioTTSCommonAccordionItem'
     ]),
     methods: {
         onBasicAccordionClick(e: Event, item: unknown, isSelected: boolean) {
@@ -74,6 +90,9 @@ export default {
         },
         onContextsAccordionClick(e: Event, item: unknown, isSelected: boolean) {
             this.$store.commit('viewStore/setExpandedGlobalAudioContextsAccordionItem', isSelected);
+        },
+        onTTSCommonAccordionClick(e: Event, item: unknown, isSelected: boolean) {
+            this.$store.commit('viewStore/setExpandedGlobalAudioTTSCommonAccordionItem', isSelected);
         }
     }
 };

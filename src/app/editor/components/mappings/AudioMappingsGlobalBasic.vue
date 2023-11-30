@@ -109,6 +109,21 @@
                     v-model="playMarkerEnabled"
                 />
             </SEControl>
+
+            <!-- <SEControl
+                v-slot="slotProps"
+                label="Enable speak value"
+                helptext="Text to speech feature speaks out the current value"
+                horizontal
+            >
+                <SECheckbox
+                    :id="slotProps.controlId"
+                    v-model="playMarkerEnabled"
+                />
+            </SEControl>
+            -->
+
+
             <SEControl
                 v-slot="slotProps"
                 label="Show tooltip on play"
