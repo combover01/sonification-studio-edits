@@ -28,6 +28,76 @@
                     :step="0.1"
                 />
             </SEControl>
+            <!--<fieldset>
+                    <legend>Master Voice Control</legend>
+                    <SEControl
+                        helpfor="Type"
+                        helptext="The type of voice for text to speech feature"
+                        :horizontal="true"
+                        :compact-content="true"
+                    >
+                        <select
+                            id="playwhen-select"
+                            v-model="context.playWhenType"
+                            aria-label="Play when"
+                        >
+                            <option
+                                v-for="playWhenType in playWhenTypes"
+                                :key="playWhenType"
+                                :value="playWhenType"
+                            >
+                                {{ playWhenType }}
+                            </option>
+                        </select>
+                    </SEControl>
+                    <SEControl
+                        v-slot="slotProps"
+                        :label="`Speed`"
+                        helptext="Set the speaking speed from 0.1 to 3."
+                    >
+                        <SESlider
+                            :id="slotProps.controlId"
+                            v-model.number="speed"
+                            :labelledby="slotProps.labelId"
+                            :min="0.1"
+                            :step="0.1"
+                            :max="3"
+                        />
+                    </SEControl>
+                </fieldset>-->
+            <SEControl
+                v-slot="slotProps"
+                label="Speak title"
+                helptext="Speak out the title of the chart. Order: title, axis names, legend"
+                horizontal
+            >
+                <SECheckbox
+                    :id="slotProps.controlId"
+                    v-model="speakTitle"
+                />
+            </SEControl>
+            <SEControl
+                v-slot="slotProps"
+                label="Speak axis names"
+                helptext="Speak out the axis names of the chart. Order: title, axis names, legend"
+                horizontal
+            >
+                <SECheckbox
+                    :id="slotProps.controlId"
+                    v-model="speakAxisNames"
+                />
+            </SEControl>
+            <SEControl
+                v-slot="slotProps"
+                label="Speak legend"
+                helptext="Speak out the legend of the chart. Order: title, axis names, legend"
+                horizontal
+            >
+                <SECheckbox
+                    :id="slotProps.controlId"
+                    v-model="speakLegend"
+                />
+            </SEControl>
             <SEControl
                 v-slot="slotProps"
                 label="Enable chart play marker"
@@ -39,6 +109,21 @@
                     v-model="playMarkerEnabled"
                 />
             </SEControl>
+
+            <!-- <SEControl
+                v-slot="slotProps"
+                label="Enable speak value"
+                helptext="Text to speech feature speaks out the current value"
+                horizontal
+            >
+                <SECheckbox
+                    :id="slotProps.controlId"
+                    v-model="playMarkerEnabled"
+                />
+            </SEControl>
+            -->
+
+
             <SEControl
                 v-slot="slotProps"
                 label="Show tooltip on play"
@@ -72,6 +157,7 @@ import SEControl from '../basic/SEControl.vue';
 import SESlider from '../basic/SESlider.vue';
 import SECheckbox from '../basic/SECheckbox.vue';
 import SERadioGroup from '../basic/SERadioGroup.vue';
+import SEDropdown from '../basic/SEDropdown.vue';
 import { speedToDuration } from '../../core/utils/sonificationTools';
 
 export default {
@@ -83,6 +169,7 @@ export default {
     },
     data() {
         return {
+            playWhenTypes: ['Male voice 1', 'Male voice 2', 'Female voice 1', 'Female voice 2'],
             orderOptions: [{
                 label: 'Simultaneous',
                 value: 'simultaneous'
@@ -115,6 +202,9 @@ export default {
         order: {
             get() { return (this as any).$store.state.globalSonifyParametersStore.order; },
             set(val) { return this.$store.commit('globalSonifyParametersStore/setOrder', val); }
+        },
+        speakTitle: {
+
         }
     }
 };
