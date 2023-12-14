@@ -30,6 +30,7 @@ export class ChartBridge {
     private chartParametersStore: GenericObject;
     private seriesParametersStore: GenericObject;
     private globalSonifyParametersStore: GenericObject;
+    private globalTTSParametersStore: GenericObject;
     private getStoreParam: (storeId: string, param: string) => any;
     private commitToStore: (id: string, payload?: any) => void;
     private storeGetter: (storeId: string, getterId: string) => any;
@@ -46,6 +47,8 @@ export class ChartBridge {
         this.chartParametersStore = store.state.chartParametersStore;
         this.seriesParametersStore = store.state.seriesParametersStore;
         this.globalSonifyParametersStore = store.state.globalSonifyParametersStore;
+        this.globalTTSParametersStore = store.state.globalTTSParametersStore;
+
         this.commitToStore = (id: string, payload?: any) => store.commit(id, payload);
         this.getStoreParam = (storeId: string, param: string): any => store.state[storeId][param];
         this.storeGetter = (storeId: string, getterId: string): any => store.getters[`${storeId}/${getterId}`];
@@ -276,7 +279,24 @@ export class ChartBridge {
         this.updatePlayProgress();
     }
 
+    public speak(text: string) {
+        this.chart?.sonification.speak(text, (context: GenericObject): void => {
+            // const pointsPlayed: GenericObject[] = context.pointsPlayed;
+            // if (!pointsPlayed.length) {
+                // return;
+            // }
+            // const numSeries = this.chart?.series.length;
+            // const announcement = pointsPlayed.reduce((acc, cur): string => {
+            //     const val = numSeries > 1 ? cur.y + ' ' + cur.series.name : cur.y;
+            //     return acc ? acc + ', ' + val : val;
+            // }, '') + '. X is ' + pointsPlayed[0].x;
 
+            // if (this.announcer) {
+            //     this.announcer.announce(announcement, true);
+            // }
+        });
+        this.updatePlayProgress();
+    }
     public playAudioSample(instrument: string) {
         const globalVolume = this.getStoreParam('globalSonifyParametersStore', 'volume');
         const Instrument = this.Highcharts.sonification.SonificationInstrument,
@@ -312,6 +332,7 @@ export class ChartBridge {
 
         timeline.play();
     }
+    
 
 
     public downloadPNG(): void {
@@ -702,6 +723,7 @@ export class ChartBridge {
         if (chartIsValid) {
             this.chartOptions = getChartOptionsFromParameters(
                 this.globalSonifyParametersStore,
+                this.globalTTSParametersStore,
                 this.chartParametersStore,
                 this.chart || {}
             );

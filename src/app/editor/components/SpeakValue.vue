@@ -17,7 +17,6 @@ import stopIcon from '../assets/stop.svg';
 import pauseIcon from '../assets/pause.svg';
 import loopIcon from '../assets/loop.svg';
 import musicIcon from '../assets/music-solid.svg';
-import PlayButton from './PlayButton.vue';
 import PlayCheckbox from './PlayCheckbox.vue';
 
 export default {
@@ -52,6 +51,7 @@ export default {
         },
         speakValue() {
             this.onStopClick();
+            this.speak("test speech");
         }
     },
     mounted() {
@@ -103,6 +103,11 @@ export default {
             this.paused = false;
             this.resetPlayPauseBtn();
             (this as any).$chartBridge.stopChart();
+        },
+        speak(text) {
+            console.log('speaking');
+            (this as any).$chartBridge.speak(text)
+            
         }
     }
 };
