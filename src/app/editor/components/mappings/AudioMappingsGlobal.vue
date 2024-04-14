@@ -53,6 +53,19 @@
                     />
                 </keep-alive>
             </SEAccordionItem>
+            <SEAccordionItem
+                heading="Text to Speech context cues"
+                :selected="expandedGlobalAudioTTSContextAccordionItem"
+                controls="audio-global-TTSContext"
+                @click="onTTSContextAccordionClick"
+            >
+                <keep-alive>
+                    <AudioMappingsGlobalTTSContext
+                        id="audio-global-TTSContext"
+                        :variable-value-prop="false"
+                    />
+                </keep-alive>
+            </SEAccordionItem>
         </SEAccordionContainer>
     </div>
 </template>
@@ -64,6 +77,7 @@ import AudioMappingsGlobalBasic from './AudioMappingsGlobalBasic.vue';
 import AudioMappingsGlobalDefaults from './AudioMappingsGlobalDefaults.vue';
 import AudioMappingsGlobalContexts from './AudioMappingsGlobalContexts.vue';
 import AudioMappingsGlobalTTSCommon from './AudioMappingsGlobalTTSCommon.vue';
+import AudioMappingsGlobalTTSContext from './AudioMappingsGlobalTTSContext.vue';
 import { mapState } from 'vuex';
 
 export default {
@@ -73,13 +87,15 @@ export default {
         AudioMappingsGlobalContexts,
         AudioMappingsGlobalDefaults,
         AudioMappingsGlobalTTSCommon,
+        AudioMappingsGlobalTTSContext,
         SEAccordionItem
     },
     computed: mapState('viewStore', [
         'expandedGlobalAudioBasicAccordionItem',
         'expandedGlobalAudioDefaultsAccordionItem',
         'expandedGlobalAudioContextsAccordionItem',
-        'expandedGlobalAudioTTSCommonAccordionItem'
+        'expandedGlobalAudioTTSCommonAccordionItem',
+        'expandedGlobalAudioTTSContextAccordionItem'
     ]),
     methods: {
         onBasicAccordionClick(e: Event, item: unknown, isSelected: boolean) {
@@ -93,6 +109,9 @@ export default {
         },
         onTTSCommonAccordionClick(e: Event, item: unknown, isSelected: boolean) {
             this.$store.commit('viewStore/setExpandedGlobalAudioTTSCommonAccordionItem', isSelected);
+        },
+        onTTSContextAccordionClick(e: Event, item: unknown, isSelected: boolean) {
+            this.$store.commit('viewStore/setExpandedGlobalAudioTTSContextAccordionItem', isSelected);
         }
     }
 };

@@ -26,6 +26,7 @@
 
             <PlayControls class="play-controls" />
 
+
             <Preview
                 v-if="showChartComponent"
                 class="preview"

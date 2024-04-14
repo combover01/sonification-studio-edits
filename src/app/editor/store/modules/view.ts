@@ -39,6 +39,7 @@ export const viewStore = {
         expandedGlobalAudioBasicAccordionItem: true,
         expandedGlobalAudioDefaultsAccordionItem: false,
         expandedGlobalAudioContextsAccordionItem: false,
+        expandedGlobalAudioTTSCommonAccordionItem: false,
         expandedSeriesAudioAccordionItems: {
             Instrument: true
         },
@@ -103,6 +104,10 @@ export const viewStore = {
 
         setExpandedGlobalAudioContextsAccordionItem(state: any, selected: boolean) {
             state.expandedGlobalAudioContextsAccordionItem = selected;
+        },
+
+        setExpandedGlobalAudioTTSCommonAccordionItem(state: any, selected: boolean) {
+            state.expandedGlobalAudioTTSCommonAccordionItem = selected;
         },
 
         triggerParameterReactivity(state: any) {

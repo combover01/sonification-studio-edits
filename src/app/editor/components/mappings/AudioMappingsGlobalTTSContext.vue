@@ -7,7 +7,7 @@
         >
             <div class="context-header">
                 <h6>
-                    Common value {{ context.id }}
+                    Context cue {{ context.id }}
                 </h6>
                 <button
                     class="remove-btn"
@@ -22,67 +22,151 @@
             </div>
 
             <div class="context-conditions">
-                Speak <SEControl
-                    helpfor="Speak"
-                    helptext="Speaks the common value"
+                Play every <input
+                    v-model="context.valueInterval"
+                    type="number"
+                    aria-label="Context interval"
+                    :min="0"
+                > <SEControl
+                    helptext="The first condition of this TTS context cue"
+                    :horizontal-reverse="true"
+                    :expand-content="true"
+                >
+                    <SEControl
+                        :horizontal="true"
+                        :compact-content="true"
+                    >
+                        <select
+                            id="condition1-select"
+                            v-model="context.condition1"
+                            aria-label="Condition"
+                        >
+                            <option
+                                v-for="condition in condition1"
+                                :key="condition"
+                                :value="condition"
+                            >
+                                {{ condition }}
+                            </option>
+                        </select>
+                    </SEControl>
+                </SEControl>
+                when
+                <select
+                    v-show="variableValueProp"
+                    v-model="context.valueProp"
+                    aria-label="Value property"
+                >
+                    <option
+                        v-for="valueProp in valueProps"
+                        :key="valueProp"
+                        :value="valueProp"
+                    >
+                        {{ valueProp }}
+                    </option>
+                </select>
+                <span
+                    v-show="!variableValueProp"
+                >
+                    <SEControl
+                        helptext="The second condition of this TTS context cue"
+                        :horizontal-reverse="true"
+                        :expand-content="true"
+                    >
+                        <SEControl
+                            :horizontal="true"
+                            :compact-content="true"
+                        >
+                            <select
+                                id="condition2-select"
+                                v-model="context.condition2"
+                                aria-label="Condition"
+                            >
+                                <option
+                                    v-for="condition in condition1"
+                                    :key="condition"
+                                    :value="condition"
+                                >
+                                    {{ condition }}
+                                </option>
+                            </select>
+                        </SEControl>
+                    </SEControl>
+                </span> is
+                <SEControl
+                    helpfor="Play when"
+                    helptext="When this context cue should be playing."
                     :horizontal="true"
                     :compact-content="true"
                 >
                     <select
-                        id="speak-select"
-                        v-model="context.speakTypes"
-                        aria-label="Speak"
+                        id="playwhen-select"
+                        v-model="context.playWhenType"
+                        aria-label="Play when"
                     >
                         <option
-                            v-for="speakType in speakTypes"
-                            :key="speakType"
-                            :value="speakType"
+                            v-for="playWhenType in playWhenTypes"
+                            :key="playWhenType"
+                            :value="playWhenType"
                         >
-                            {{ speakType }}
+                            {{ playWhenType }}
                         </option>
                     </select>
                 </SEControl>
-                value for
+
                 <SEControl
-                    helpfor="Axis"
-                    helptext="Axis type"
-                    :horizontal="true"
-                    :compact-content="true"
+                    v-show="context.playWhenType.startsWith('crossing')"
+                    v-slot="slotProps"
+                    label="Threshold"
+                    helptext="The context will play only when the value crosses this threshold."
+                    :horizontal-reverse="true"
+                    :expand-content="true"
                 >
-                    <select
-                        id="axisType-select"
-                        v-model="context.axisTypes"
-                        aria-label="Axis"
-                    >
-                        <option
-                            v-for="axisType in axisTypes"
-                            :key="axisType"
-                            :value="axisType"
-                        >
-                            {{ axisType }}
-                        </option>
-                    </select>
-                </SEControl> axis
+                    <SESlider
+                        :id="slotProps.controlId"
+                        v-model.number="context.playWhenThreshold"
+                        :labelledby="slotProps.labelId"
+                        :min="context.valueProp === 'x' ? xRange.min : yRange.min"
+                        :max="context.valueProp === 'x' ? xRange.max : yRange.max"
+                        :step="context.valueProp === 'x' ? xStep : yStep"
+                    />
+                </SEControl>
+
                 <SEControl
-                    helpfor="Speak When"
-                    helptext="When to speak the common value"
-                    :horizontal="true"
-                    :compact-content="true"
+                    v-show="context.playWhenType === 'between'"
+                    v-slot="slotProps"
+                    label="Min"
+                    helptext="The context will play only when the value is greater than or equal to this."
+                    :horizontal-reverse="true"
+                    :expand-content="true"
                 >
-                    <select
-                        id="speakWhen-select"
-                        v-model="context.speakWhen"
-                        aria-label="When"
-                    >
-                        <option
-                            v-for="when in speakWhen"
-                            :key="when"
-                            :value="when"
-                        >
-                            {{ when }}
-                        </option>
-                    </select>
-                </SEControl> the chart plays
+                    <SESlider
+                        :id="slotProps.controlId"
+                        v-model.number="context.playWhenMin"
+                        :labelledby="slotProps.labelId"
+                        :min="context.valueProp === 'x' ? xRange.min : yRange.min"
+                        :max="context.valueProp === 'x' ? xRange.max : yRange.max"
+                        :step="context.valueProp === 'x' ? xStep : yStep"
+                    />
+                </SEControl>
+
+                <SEControl
+                    v-show="context.playWhenType === 'between'"
+                    v-slot="slotProps"
+                    label="Max"
+                    helptext="The context will play only when the value is less than or equal to this."
+                    :horizontal-reverse="true"
+                    :expand-content="true"
+                >
+                    <SESlider
+                        :id="slotProps.controlId"
+                        v-model.number="context.playWhenMax"
+                        :labelledby="slotProps.labelId"
+                        :min="context.valueProp === 'x' ? xRange.min : yRange.min"
+                        :max="context.valueProp === 'x' ? xRange.max : yRange.max"
+                        :step="context.valueProp === 'x' ? xStep : yStep"
+                    />
+                </SEControl>
             </div>
 
             <button
@@ -220,10 +304,10 @@ export default {
             arrowDownIcon,
             removeIcon,
             valueProps: ['x', 'y'],
-            speakTypes: ['mean', 'median', 'mode', 'max', 'min'],
-            axisTypes: ['X', 'Y'],
-            speakWhen: ['before', 'during', 'after'],
+            playWhenTypes: ['always', 'between', 'crossing above', 'crossing below', 'never'],
             voiceTypes: ['Male voice 1', 'Male voice 2', 'Female voice 1', 'Female voice 2'],
+            condition1: ['X value', 'Y value', 'X axis', 'Y axis'],
+            condition2: ['X value', 'Y value', 'X axis', 'Y axis'],
             pitchTypeOptions: [{
                 value: 'fixed', label: 'Fixed'
             }, {

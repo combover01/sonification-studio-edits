@@ -51,7 +51,7 @@ export default {
         },
         speakValue() {
             this.onStopClick();
-            this.speak("test speech");
+            this.speak('test speech');
         }
     },
     mounted() {
@@ -106,8 +106,7 @@ export default {
         },
         speak(text) {
             console.log('speaking');
-            (this as any).$chartBridge.speak(text)
-            
+            (this as any).$chartBridge.speak(text);
         }
     }
 };

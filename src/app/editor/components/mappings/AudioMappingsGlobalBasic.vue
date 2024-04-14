@@ -28,18 +28,22 @@
                     :step="0.1"
                 />
             </SEControl>
-            <!--<fieldset>
-                    <legend>Master Voice Control</legend>
+            <fieldset>
+                <legend>Master Voice Control</legend>
+                <SEControl
+                    label="Type"
+                    helptext="The type of voice that text to speech feature speaks."
+                    :horizontal-reverse="true"
+                    :expand-content="true"
+                >
                     <SEControl
-                        helpfor="Type"
-                        helptext="The type of voice for text to speech feature"
                         :horizontal="true"
                         :compact-content="true"
                     >
                         <select
-                            id="playwhen-select"
-                            v-model="context.playWhenType"
-                            aria-label="Play when"
+                            id="voice-select"
+                            v-model="playWhenType"
+                            aria-label="Voice"
                         >
                             <option
                                 v-for="playWhenType in playWhenTypes"
@@ -50,21 +54,23 @@
                             </option>
                         </select>
                     </SEControl>
-                    <SEControl
-                        v-slot="slotProps"
-                        :label="`Speed`"
-                        helptext="Set the speaking speed from 0.1 to 3."
-                    >
-                        <SESlider
-                            :id="slotProps.controlId"
-                            v-model.number="speed"
-                            :labelledby="slotProps.labelId"
-                            :min="0.1"
-                            :step="0.1"
-                            :max="3"
-                        />
-                    </SEControl>
-                </fieldset>-->
+                </SEControl>
+                <SEControl
+                    v-slot="slotProps"
+                    label="Speed (%)"
+                    helptext="The speed of the text to speech voice."
+                    :horizontal-reverse="true"
+                    :expand-content="true"
+                >
+                    <SESlider
+                        :id="slotProps.controlId"
+                        :labelledby="slotProps.labelId"
+                        :max="200"
+                        :min="50"
+                        :step="5"
+                    />
+                </SEControl>
+            </fieldset>
             <SEControl
                 v-slot="slotProps"
                 label="Speak title"
@@ -157,7 +163,6 @@ import SEControl from '../basic/SEControl.vue';
 import SESlider from '../basic/SESlider.vue';
 import SECheckbox from '../basic/SECheckbox.vue';
 import SERadioGroup from '../basic/SERadioGroup.vue';
-import SEDropdown from '../basic/SEDropdown.vue';
 import { speedToDuration } from '../../core/utils/sonificationTools';
 
 export default {
@@ -237,4 +242,15 @@ export default {
             }
         }
     }
+    fieldset {
+    border: 1px solid @purple-5;
+    padding: 5px;
+    margin: 15px 0;
+    .se-control {
+        margin-top: 0;
+    }
+    legend {
+        padding: 0 5px;
+    }
+}
 </style>

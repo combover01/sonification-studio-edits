@@ -6,13 +6,13 @@
 
 import { GenericObject, firstDefined } from '../../core/utils/objects';
 
-interface AddContextPayload {
+interface AddCommonPayload {
     valueRange: number|null;
     inactive: boolean;
 }
 
 let idCounter = 1;
-const makeDefaultContext = (valueMultiplier: number, valueMultiplierName: string): GenericObject => ({
+const makeDefaultCommon = (valueMultiplier: number, valueMultiplierName: string): GenericObject => ({
     valueInterval: 1,
     valueMultiplier,
     valueMultiplierName,
@@ -45,7 +45,7 @@ const defaultState = () => ({
     // panEnabled: true,
     // panWidth: 100,
     detail: 15,
-    contexts: []
+    commons: []
 });
 
 export const globalTTSParametersStore = {
@@ -62,7 +62,7 @@ export const globalTTSParametersStore = {
             const defaultOpts: GenericObject = defaultState();
             [
                 'volume', 'playMarkerEnabled', 'minNote', 'maxNote', 'detail',
-                'speed', 'order', 'contexts'
+                'speed', 'order', 'commons'
             ].forEach(
                 x => state[x] = newState ? firstDefined(newState[x], state[x]) : defaultOpts[x]);
         },
@@ -107,14 +107,14 @@ export const globalTTSParametersStore = {
         //     state.panWidth = panWidth;
         // },
 
-        removeContext(state: any, id: number) {
-            const ix = state.contexts.findIndex((c: GenericObject) => c.id === id);
+        removeCommon(state: any, id: number) {
+            const ix = state.commons.findIndex((c: GenericObject) => c.id === id);
             if (ix > -1) {
-                state.contexts.splice(ix, 1);
+                state.commons.splice(ix, 1);
             }
         },
 
-        addContext(state: any, payload: AddContextPayload) {
+        addCommon(state: any, payload: AddCommonPayload) {
             const bin = [
                 [1000 * 60 * 60 * 24 * 365, 'years'],
                 [1000 * 60 * 60 * 24 * 30.42, 'months'],
@@ -124,10 +124,10 @@ export const globalTTSParametersStore = {
                 [1000, 'seconds']
             ].find(([val]) => val as number * 3 < (payload.valueRange || -Infinity));
 
-            state.contexts.push(Object.assign(
+            state.commons.push(Object.assign(
                 bin ?
-                    makeDefaultContext(bin[0] as number, bin[1] as string) :
-                    makeDefaultContext(1, 'milliseconds'),
+                    makeDefaultCommon(bin[0] as number, bin[1] as string) :
+                    makeDefaultCommon(1, 'milliseconds'),
                 payload.inactive ? { playWhenType: 'never' } : {}
             ));
         }

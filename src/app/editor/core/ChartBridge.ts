@@ -283,7 +283,7 @@ export class ChartBridge {
         this.chart?.sonification.speak(text, (context: GenericObject): void => {
             // const pointsPlayed: GenericObject[] = context.pointsPlayed;
             // if (!pointsPlayed.length) {
-                // return;
+            // return;
             // }
             // const numSeries = this.chart?.series.length;
             // const announcement = pointsPlayed.reduce((acc, cur): string => {
@@ -332,9 +332,6 @@ export class ChartBridge {
 
         timeline.play();
     }
-    
-
-
     public downloadPNG(): void {
         this.chart?.exportChart({
             filename: this.getChartTitleForExport()
